@@ -4,11 +4,14 @@
 #define Z_DIR_PIN  6
 
 // Steps per unit (mm)
-const int steps_per_unit_X = 100; 
-const int steps_per_unit_Z = 100;  
+const int steps_per_unit_X = 100;
+const int steps_per_unit_Z = 100;
 
 // Speed controller delay
 const int step_delay = 50;  // Delay between every step
+
+// Flag
+bool item_loaded = false;
 
 void moveTo(int x_target, int z_target) {
   // Static variables to remember the last position
@@ -53,4 +56,5 @@ void moveTo(int x_target, int z_target) {
   // Update the last position to the new target
   x_position = x_target;
   z_position = z_target;
+  item_loaded = true;
 }

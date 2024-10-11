@@ -1,6 +1,6 @@
 #define TRIG_PIN 8
 #define ECHO_PIN 9
-#define DISTANCE_THRESHOLD 15  // Distance threshold in cm
+#define DISTANCE_THRESHOLD 5  // Distance threshold in cm
 
 // Flag that will trigger the pickup motor
 bool object_detected = false;

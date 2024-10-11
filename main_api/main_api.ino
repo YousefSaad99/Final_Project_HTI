@@ -1,6 +1,6 @@
 // Include the necessary files
-#include "received.ino"
-#include "moveXZ.ino"
+#include "received.h"
+#include "moveXZ.h"
 #include "pickup.h"
 
 void setup() {
@@ -15,32 +15,35 @@ void setup() {
 }
 
 void loop() {
-  // Check the ultrasonic sensor
-  checkUltrasonic();
+  system();
+}
 
-  // If object is detected, trigger the motor movements
-  if (object_detected) {
-    // Move from (0, 0) to (10, 0)
-    moveTo(10, 0);
-    delay(1000);  // Wait 1 second
+// Flags that will control the system workflow
+/* 
+item_loaded
+object_detected
+pickup_done
+*/
 
-    // Move from (10, 0) to (10, 10)
-    moveTo(10, 10);
-    delay(1000);  // Wait 1 second
+void system(){
+  // check the item is in the pickup postion
+  checkUltrasonic();  // step 1
 
-    // Move back to (0, 0)
-    moveTo(0, 0);
-    delay(1000);  // Wait 1 second
-
-    // Trigger the pickup motor
-    movePickupMotor();
-
-    // Wait for the pickup to complete
-    if (pickup_done) {
-      // Pickup is done, can add further actions if needed
-      // Reset the flags if needed
-      object_detected = false;
-      pickup_done = false;
-    }
+  if (object_detected){
+    movePickupMotor(); // step 2
   }
+  if (pickup_done){
+      moveTo(5,5); // step 3
+      pickup_done = false;
+  }
+  if (item_loaded){
+    movePickupMotor(); // step 4 
+  }
+  if (pickup_done){
+    moveTo(0,0); // step 5 last step, the arm will go back to the start postion 0,0
+    object_detected = false;
+    item_loaded = false;
+    pickup_done = false;
+  }
+
 }

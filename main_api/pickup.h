@@ -15,9 +15,8 @@ void movePickupMotor() {
     delayMicroseconds(500);
   }
 
-  delay(1000);  // Wait for 1 second
+  delay(1000);  
 
-  // Move backward (set direction backward)
   digitalWrite(PICKUP_DIR_PIN, LOW);
   for (int i = 0; i < steps_per_unit_pickup; i++) {
     digitalWrite(PICKUP_STEP_PIN, HIGH);
