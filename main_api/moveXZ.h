@@ -1,25 +1,31 @@
-#define X_STEP_PIN 2
-#define X_DIR_PIN  5
-#define Z_STEP_PIN 3
-#define Z_DIR_PIN  6
+#include "moveXZ.h"
+#include "pickup.h"
+#include "Conveyor.h"
+
+#define X_STEP_PIN 9
+#define X_DIR_PIN  6
+#define Z_STEP_PIN 10
+#define Z_DIR_PIN  8
 
 // Steps per unit (mm)
 const int steps_per_unit_X = 100;
 const int steps_per_unit_Z = 100;
 
 // Speed controller delay
-const int step_delay = 50;  // Delay between every step
+const int step_delay = 50;  // Delay between every step (speed of the stepper)
+
+// Static variables to remember the last position
+static int x_position = 0;
+static int z_position = 0;
 
 // Flag
-bool item_loaded = false;
+static bool item_loaded = false;
 
 void moveTo(int x_target, int z_target) {
-  // Static variables to remember the last position
-  static int x_position = 0;
-  static int z_position = 0;
+
 
   // Calculate the difference between the target and current position
-  int x_steps = abs(x_target - x_position) * steps_per_unit_X;  // X-axis steps
+  int x_steps = abs(x_target - x_position) * steps_per_unit_X;  // X-axis steps 
   int z_steps = abs(z_target - z_position) * steps_per_unit_Z;  // Z-axis steps
 
   // Set direction for X-axis
@@ -42,7 +48,7 @@ void moveTo(int x_target, int z_target) {
       digitalWrite(X_STEP_PIN, HIGH);
       delayMicroseconds(step_delay);
       digitalWrite(X_STEP_PIN, LOW);
-      delayMicroseconds(step_delay);
+      delayMicroseconds(step_delay); // 50ms
     }
 
     if (i < z_steps) {
@@ -56,5 +62,12 @@ void moveTo(int x_target, int z_target) {
   // Update the last position to the new target
   x_position = x_target;
   z_position = z_target;
+
   item_loaded = true;
+
+  if(x_position == 0 && z_position == 0){
+    pickup_done = false;
+    item_loaded = false;
+  }
+
 }

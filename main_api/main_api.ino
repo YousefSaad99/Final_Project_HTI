@@ -1,7 +1,7 @@
 // Include the necessary files
-#include "received.h"
 #include "moveXZ.h"
 #include "pickup.h"
+#include "Conveyor.h"
 
 void setup() {
   // Initialize ultrasonic sensor and stepper motor pins
@@ -12,6 +12,8 @@ void setup() {
   pinMode(Z_DIR_PIN, OUTPUT);
   pinMode(PICKUP_STEP_PIN, OUTPUT);
   pinMode(PICKUP_DIR_PIN, OUTPUT);
+
+  setup_conveyor()
 }
 
 void loop() {
@@ -20,30 +22,32 @@ void loop() {
 
 // Flags that will control the system workflow
 /* 
-item_loaded
-object_detected
+conveyor_done
 pickup_done
+item_loaded
 */
 
 void system(){
-  // check the item is in the pickup postion
-  checkUltrasonic();  // step 1
+ 
+  // check item in the conveyor pickup position
 
-  if (object_detected){
-    movePickupMotor(); // step 2
+  conveyor()  // step 1
+
+  if (conveyor_done){  // flag from conveyor.h
+    pickUp(); // step 2
   }
-  if (pickup_done){
+
+  delay(1000);
+
+  if (pickup_done){   // flag from pickup.h
       moveTo(5,5); // step 3
-      pickup_done = false;
   }
-  if (item_loaded){
-    movePickupMotor(); // step 4 
+  if (item_loaded){   // flag from moveXZ.h
+    pickUp(); // step 4  >> load item to the shelf
   }
+
   if (pickup_done){
     moveTo(0,0); // step 5 last step, the arm will go back to the start postion 0,0
-    object_detected = false;
-    item_loaded = false;
-    pickup_done = false;
   }
 
 }
