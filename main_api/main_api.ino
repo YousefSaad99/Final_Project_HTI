@@ -4,8 +4,7 @@
 #include "Conveyor.h"
 
 void setup() {
-  // Initialize ultrasonic sensor and stepper motor pins
-  setupUltrasonic();
+
   pinMode(X_STEP_PIN, OUTPUT);
   pinMode(X_DIR_PIN, OUTPUT);
   pinMode(Z_STEP_PIN, OUTPUT);

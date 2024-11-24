@@ -34,7 +34,8 @@ void setup_conveyor() {
     pinMode(echoPin2, INPUT);
 
     // Set the motor pin as OUTPUT
-    pinMode(motorPin, OUTPUT);
+    pinMode(motorPin1, OUTPUT);
+    pinMode(motorPin2, OUTPUT);
 
     // Start with the motor turned off
     digitalWrite(motorPin, LOW);

@@ -1,7 +1,5 @@
-#include "moveXZ.h"
 #include "pickup.h"
-#include "Conveyor.h"
-
+#include "moveXZ.h"
 #define PICKUP_STEP_PIN 11
 #define PICKUP_DIR_PIN 7
 
