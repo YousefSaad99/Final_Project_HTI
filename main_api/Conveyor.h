@@ -27,9 +27,6 @@ static bool conveyor_done = false;
 
 
 void setup_conveyor() {
-    // Initialize the serial connection for printing distances
-    Serial.begin(9600);
-
     // Set the ultrasonic sensor pins as OUTPUT (trigger) and INPUT (echo)
     pinMode(triggerPin1, OUTPUT);
     pinMode(echoPin1, INPUT);
@@ -47,27 +44,18 @@ void conveyor() {
     // Measure distance from both ultrasonic sensors
     float distance1 = measureDistanceCm(triggerPin1, echoPin1);
     float distance2 = measureDistanceCm(triggerPin2, echoPin2);
-
-    // Print the distances for debugging purposes
-    Serial.print("Distance Sensor 1: ");
-    Serial.print(distance1);
-    Serial.print(" cm | Distance Sensor 2: ");
-    Serial.print(distance2);
-    Serial.println(" cm");
-
+    
     // Check if the object is detected by Sensor 1
     if (distance1 > 0 && distance1 < objectThreshold) {
         // Start the motor if an object is detected by Sensor 1
         delay(10000);
         digitalWrite(motorPin, HIGH);
-        Serial.println("Motor ON: Object detected by Sensor 1");
     }
 
     // Check if the object is detected by Sensor 2
     if (distance2 > 0 && distance2 < objectThreshold) {
         // Stop the motor if an object is detected by Sensor 2
         digitalWrite(motorPin, LOW);
-        Serial.println("Motor OFF: Object detected by Sensor 2");
     }
 
     conveyor_done = true;
